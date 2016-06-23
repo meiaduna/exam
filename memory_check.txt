@@ -9,7 +9,7 @@ USED_MEM=$(free | grep Mem | awk '{printf("%.0f"), $3/$2 * 100.0}')
 #if no parameter were supplied then show instructions
 if [ $# -eq 0 ];
 then
-cat /home/monitor/scripts
+cat /home/monitor/scripts/man_memorycheck
 exit 0
 fi
 
