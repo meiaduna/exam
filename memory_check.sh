@@ -54,6 +54,6 @@ then
 fi
 
         else
-echo "The value of warning threshold you have inputed must be less than the critical threshold "
+echo "The value of warning threshold you have entered must be less than the critical threshold "
 exit 0
 fi
