@@ -1,4 +1,4 @@
-#Installation of vim package
+#Installation of packages
 node 'bpx.server.local'{
 
 include 'install_package'
@@ -28,7 +28,6 @@ package { 'vim-enhanced' :
   #      }
 }
 
-
 class user_add_monitor{
         user {'monitor': #user name
         ensure => present,
@@ -38,7 +37,6 @@ class user_add_monitor{
         }
 }
 
-
 class add_directory_scripts{
         file {'/home/monitor/scripts':
         ensure => 'directory',
@@ -47,8 +45,6 @@ class add_directory_scripts{
         mode => '750',
         }
 }
-
-
 
 class add_directory_src{
         file {'/home/monitor/src':
@@ -79,17 +75,12 @@ class get_scriptmem{
 
 }
 
-
-
-
 class memcheck_softlink{
         file {'/home/monitor/src/my_memory_check':
         ensure => 'link',
         target => '/home/monitor/scripts/memory_check',
         }
 }
-
-
 
 class mem_cron {
         cron {'cron':
@@ -100,4 +91,3 @@ class mem_cron {
         monthday => '*',
         }
 }
-
