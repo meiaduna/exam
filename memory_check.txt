@@ -32,7 +32,6 @@ Email=$OPTARG
 esac
 done
 
-#If memory if less greater than 60 the output is critical state
 if [ $Warning -lt $Critical ];
 then
 
