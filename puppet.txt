@@ -1,0 +1,103 @@
+#Installation of vim package
+node 'bpx.server.local'{
+
+include 'install_package'
+include 'user_add_monitor'
+include 'add_directory_scripts'
+include 'add_directory_src'
+include 'get_scriptman'
+include 'get_scriptmem'
+include 'memcheck_softlink'
+include 'mem_cron'
+
+#include 'pht_timezone'
+}
+class install_package{
+package { 'vim-enhanced' :
+        ensure => installed,
+                }
+        package { 'curl':
+        ensure => installed,
+                }
+
+        package {'git':
+        ensure => installed,
+                }
+#class pht_timezone{'timezone':
+ #       timezone => 'UTC',
+  #      }
+}
+
+
+class user_add_monitor{
+        user {'monitor': #user name
+        ensure => present,
+        shell => '/bin/bash', #working shell
+        home => '/home/monitor', #path of home directory
+        managehome => true,
+        }
+}
+
+
+class add_directory_scripts{
+        file {'/home/monitor/scripts':
+        ensure => 'directory',
+        owner => 'monitor',
+        group => 'monitor',
+        mode => '750',
+        }
+}
+
+
+
+class add_directory_src{
+        file {'/home/monitor/src':
+        ensure => 'directory',
+        owner => 'monitor',
+        group => 'monitor',
+        mode => '750',
+        }
+}
+
+class get_scriptman{
+
+        exec {'get_man':
+        command => "/usr/bin/wget -q https://raw.githubusercontent.com/meiaduna/exam/master/man_memorycheck.txt -O /home/monitor/scripts/man_memorycheck",
+}
+
+}
+
+class get_scriptmem{
+        exec {'get_mem':
+        command => "/usr/bin/wget -q https://raw.githubusercontent.com/meiaduna/exam/master/memory_check.sh -O /home/monitor/scripts/memory_check",
+        }
+
+        file {'/home/monitor/scripts/memory_check':
+        mode => '0750',
+        require => Exec["get_mem"],
+        }
+
+}
+
+
+
+
+class memcheck_softlink{
+        file {'/home/monitor/src/my_memory_check':
+        ensure => 'link',
+        target => '/home/monitor/scripts/memory_check',
+        }
+}
+
+
+
+class mem_cron {
+        cron {'cron':
+        command => "sh /home/monitor/src/my_memory_check -w 60 -c 90 -e eraduna@chikka.com",
+        hour => '*',
+        minute => '*/10',
+        month => '*',
+        monthday => '*',
+        }
+}
+
